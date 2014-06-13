@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">KissLock</string>
+
+    <string name="attachToContact">Choose Picture</string>
+    <string name="take_photo">Take photo</string>
+    <string name="pick_photo">Select photo from Gallery</string>
+
+</resources>
