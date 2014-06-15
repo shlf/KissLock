@@ -92,7 +92,8 @@ public class PickPhotoAction {
             intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
             sActivity.startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
         } else {
-            Toast.makeText(sActivity, "内存卡不存在", Toast.LENGTH_LONG).show();
+            Toast.makeText(sActivity, sActivity.getString(R.string.error_sdcard), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
@@ -118,13 +119,15 @@ public class PickPhotoAction {
         if (requestCode == SELECT_PIC_BY_PICK_PHOTO) {
             // 从相册取图片，有些手机有异常情况，请注意
             if (data == null) {
-                Toast.makeText(sActivity, "选择图片文件出错", Toast.LENGTH_LONG).show();
+                Toast.makeText(sActivity, sActivity.getString(R.string.error_select),
+                        Toast.LENGTH_LONG).show();
                 return null;
             }
 
             photoUri = data.getData();
             if (photoUri == null) {
-                Toast.makeText(sActivity, "选择图片文件出错", Toast.LENGTH_LONG).show();
+                Toast.makeText(sActivity, sActivity.getString(R.string.error_select),
+                        Toast.LENGTH_LONG).show();
                 return null;
             }
         }
@@ -148,7 +151,8 @@ public class PickPhotoAction {
                         || picPath.endsWith(".jpg") || picPath.endsWith(".JPG"))) {
             return picPath;
         } else {
-            Toast.makeText(sActivity, "选择图片文件不正确", Toast.LENGTH_LONG).show();
+            Toast.makeText(sActivity, sActivity.getString(R.string.error_file_formart),
+                    Toast.LENGTH_LONG).show();
         }
 
         return null;

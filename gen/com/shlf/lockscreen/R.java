@@ -29,6 +29,9 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050000;
         public static final int attachToContact=0x7f050001;
+        public static final int error_file_formart=0x7f050008;
+        public static final int error_sdcard=0x7f050006;
+        public static final int error_select=0x7f050007;
         public static final int goto_launcher=0x7f050005;
         public static final int pick_photo=0x7f050003;
         public static final int repick_photo=0x7f050004;

@@ -10,4 +10,8 @@
     <string name="repick_photo">Re-pick photo</string>
     <string name="goto_launcher">Goto Launcher</string>
 
+    <string name="error_sdcard">SD card not exists</string>
+    <string name="error_select">Select picture error</string>
+    <string name="error_file_formart">Select picture formart error</string>
+
 </resources>

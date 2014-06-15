@@ -10,4 +10,7 @@
     <string name="repick_photo">重新选择图片</string>
     <string name="goto_launcher">返回桌面</string>
 
+    <string name="error_sdcard">内存卡不存在</string>
+    <string name="error_select">选择图片文件出错</string>
+    <string name="error_file_formart">选择图片文件不正确</string>
 </resources>

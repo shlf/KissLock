@@ -38,21 +38,7 @@ public class MainActivity extends Activity {
 
         String photoPath = mSpm.getStringValue(SharedPreferencesManager.FILE_PHOTO_PATH,
                 SharedPreferencesManager.KEY_PHOTO_PATH, "");
-
-        if (TextUtils.isEmpty(photoPath)) {
-            InputStream is = null;
-            try {
-                is = getAssets().open("default/mycar.jpg");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (null != is) {
-                mShowPhoto.setBackgroundDrawable(Drawable.createFromStream(is, "default.jpg"));
-            }
-        } else {
-            mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));
-        }
+        showPhoto(photoPath);
 
         boolean repickTip = getIntent().getBooleanExtra("repick-tip", false);
         if (repickTip) {
@@ -80,6 +66,23 @@ public class MainActivity extends Activity {
             finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showPhoto(String photoPath) {
+        if (TextUtils.isEmpty(photoPath)) {
+            InputStream is = null;
+            try {
+                is = getAssets().open("default/mycar.jpg");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (null != is) {
+                mShowPhoto.setBackgroundDrawable(Drawable.createFromStream(is, "default.jpg"));
+            }
+        } else {
+            mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));
+        }
     }
 
     /**
