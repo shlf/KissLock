@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            String photoPath = PickPhotoAction.getPhotoPath(requestCode, data);
+            String photoPath = PickPhotoAction.handResult(requestCode, data);
 
             mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));
             mSpm.setString(SharedPreferencesManager.FILE_PHOTO_PATH,

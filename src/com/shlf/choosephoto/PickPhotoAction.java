@@ -7,11 +7,12 @@ import com.shlf.lockscreen.util.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,15 +23,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PickPhotoAction {
     private static final String TAG = PickPhotoAction.class.getSimpleName();
-    private static Activity sActivity;
+
+    private static final File PHOTO_DIR = new File(Environment.getExternalStorageDirectory()
+            + "/DCIM/Camera");
 
     // 使用照相机拍照获取图片
     public static final int SELECT_PIC_BY_TACK_PHOTO = 1;
 
     // 使用相册中的图片
     public static final int SELECT_PIC_BY_PICK_PHOTO = 2;
+
+    private static Activity sActivity;
+    private static File mCurrentPhotoFile;
 
     /**
      * Creates a dialog offering two options: take a photo or pick a photo from
@@ -80,30 +90,48 @@ public class PickPhotoAction {
         // 执行拍照前，应该先判断SD卡是否存在
         String SDState = Environment.getExternalStorageState();
         if (SDState.equals(Environment.MEDIA_MOUNTED)) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// "android.media.action.IMAGE_CAPTURE"
-
-            /***
-             * 需要说明一下，以下操作使用照相机拍照，拍照后的图片会存放在相册中的 这里使用的这种方式有一个好处就是获取的图片是拍照后的原图
-             * 如果不实用ContentValues存放照片路径的话，拍照后获取的图片为缩略图不清晰
-             */
-            ContentValues values = new ContentValues();
-            Uri photoUri = sActivity.getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, photoUri);
-            sActivity.startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
+            if (!PHOTO_DIR.exists()) PHOTO_DIR.mkdirs();
+            try {
+                // Launch camera to take photo for selected contact
+                PHOTO_DIR.mkdirs();
+                mCurrentPhotoFile = new File(PHOTO_DIR, getPhotoFileName());
+                final Intent intent = getTakePickIntent(mCurrentPhotoFile);
+                sActivity.startActivityForResult(intent, SELECT_PIC_BY_TACK_PHOTO);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(sActivity, "R.string.photoPickerNotFoundText", Toast.LENGTH_LONG)
+                        .show();
+            }
         } else {
             Toast.makeText(sActivity, sActivity.getString(R.string.error_sdcard), Toast.LENGTH_LONG)
                     .show();
         }
     }
 
+    /**
+     * Create a file name for the icon photo using current time.
+     */
+    private static String getPhotoFileName() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
+        return dateFormat.format(date) + ".jpg";
+    }
+
+    /**
+     * Constructs an intent for capturing a photo and storing it in a temporary
+     * file.
+     */
+    public static Intent getTakePickIntent(File f) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+        return intent;
+    }
+
     /***
      * 从相册中取图片
      */
     private static void doPickPhoto() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
         sActivity.startActivityForResult(intent, SELECT_PIC_BY_PICK_PHOTO);
     }
 
@@ -156,5 +184,26 @@ public class PickPhotoAction {
         }
 
         return null;
+    }
+
+    public static String handResult(int requestCode, Intent data) {
+        switch (requestCode) {
+            case SELECT_PIC_BY_TACK_PHOTO: {
+                // Add the image to the media store
+                MediaScannerConnection.scanFile(sActivity, new String[] {
+                    mCurrentPhotoFile.getAbsolutePath()
+                }, new String[] {
+                    null
+                }, null);
+                return mCurrentPhotoFile.getAbsolutePath();
+            }
+
+            case SELECT_PIC_BY_PICK_PHOTO: {
+                return getPhotoPath(requestCode, data);
+            }
+
+            default:
+                return null;
+        }
     }
 }
