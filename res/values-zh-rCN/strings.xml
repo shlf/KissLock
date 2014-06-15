@@ -6,6 +6,7 @@
     <string name="attachToContact">选择图片</string>
     <string name="take_photo">相机</string>
     <string name="pick_photo">相册</string>
+    <string name="default_photo">使用默认图片</string>
 
     <string name="repick_photo">重新选择图片</string>
     <string name="goto_launcher">返回桌面</string>

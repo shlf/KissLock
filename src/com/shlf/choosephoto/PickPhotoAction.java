@@ -2,6 +2,7 @@
 package com.shlf.choosephoto;
 
 import com.shlf.lockscreen.R;
+import com.shlf.lockscreen.util.SharedPreferencesManager;
 import com.shlf.lockscreen.util.Utils;
 
 import android.app.Activity;
@@ -53,10 +54,11 @@ public class PickPhotoAction {
         final Context dialogContext = new ContextThemeWrapper(sActivity,
                 android.R.style.Theme_Light);
 
-        String[] choices = new String[3];
+        String[] choices = new String[4];
         choices[0] = sActivity.getString(R.string.take_photo);
         choices[1] = sActivity.getString(R.string.pick_photo);
-        choices[2] = sActivity.getString(android.R.string.cancel);
+        choices[2] = sActivity.getString(R.string.default_photo);
+        choices[3] = sActivity.getString(android.R.string.cancel);
         final ListAdapter adapter = new ArrayAdapter<String>(dialogContext,
                 android.R.layout.simple_list_item_1, choices);
 
@@ -74,6 +76,14 @@ public class PickPhotoAction {
                         doPickPhoto();
                         break;
                     case 2:
+                        SharedPreferencesManager mSpm = SharedPreferencesManager.getInstance();
+                        mSpm.setString(SharedPreferencesManager.FILE_PHOTO_PATH,
+                                SharedPreferencesManager.KEY_PHOTO_PATH, "default");
+
+                        Utils.gotoLockScreen(sActivity);
+                        sActivity.finish();
+                        break;
+                    case 3:
                         Utils.gotoLockScreen(sActivity);
                         sActivity.finish();
                         break;

@@ -102,22 +102,30 @@ public class LockActivity extends Activity {
                 SharedPreferencesManager.KEY_PHOTO_PATH, "");
 
         if (TextUtils.isEmpty(photoPath)) {
-            InputStream is = null;
-            try {
-                is = getAssets().open("default/mycar.jpg");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (null != is) {
-                mShowPhoto.setBackgroundDrawable(Drawable.createFromStream(is, "default.jpg"));
-            }
+            displayDefault();
 
             // goto pick photo.
             Utils.gotoMain(this);
             finish();
         } else {
-            mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));
+            if ("default".equals(photoPath)) {
+                displayDefault();
+            } else {
+                mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));
+            }
+        }
+    }
+
+    private void displayDefault() {
+        InputStream is = null;
+        try {
+            is = getAssets().open("default/mycar.jpg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (null != is) {
+            mShowPhoto.setBackgroundDrawable(Drawable.createFromStream(is, "default.jpg"));
         }
     }
 }
