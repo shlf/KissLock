@@ -1,6 +1,7 @@
 
 package com.shlf.lockscreen.util;
 
+import com.shlf.lockscreen.MainActivity;
 import com.shlf.lockscreen.lock.LockActivity;
 
 import android.content.Context;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class Utils {
+
     // 获取SDCard的目录路径功能
     public static String getSDCardPath() {
         String SDCardPath = null;
@@ -73,9 +75,24 @@ public class Utils {
         }
     }
 
+    // goto lock screen.
     public static void gotoLockScreen(Context ctx) {
         Intent newIntent = new Intent(ctx, LockActivity.class);
         newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         ctx.startActivity(newIntent);
+    }
+
+    // goto pick photo.
+    public static void gotoMain(Context ctx) {
+        Intent newIntent = new Intent(ctx, MainActivity.class);
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(newIntent);
+    }
+
+    // goto launcher.
+    public static void gotoLauncher(Context ctx) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory("android.intent.category.HOME");
+        ctx.startActivity(intent);
     }
 }

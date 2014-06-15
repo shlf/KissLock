@@ -7,4 +7,7 @@
     <string name="take_photo">Take photo</string>
     <string name="pick_photo">Select photo from Gallery</string>
 
+    <string name="repick_photo">Re-pick photo</string>
+    <string name="goto_launcher">Goto Launcher</string>
+
 </resources>

@@ -4,6 +4,7 @@ package com.shlf.lockscreen.lock;
 import com.shlf.lockscreen.MainActivity;
 import com.shlf.lockscreen.R;
 import com.shlf.lockscreen.util.SharedPreferencesManager;
+import com.shlf.lockscreen.util.Utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -57,10 +58,11 @@ public class LockActivity extends Activity {
         mShowPhoto.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // goto launcher.
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory("android.intent.category.HOME");
-                startActivity(intent);
+                Intent newIntent = new Intent(LockActivity.this, MainActivity.class);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                newIntent.putExtra("repick-tip", true);
+                startActivity(newIntent);
+                finish();
             }
         });
 
@@ -112,9 +114,7 @@ public class LockActivity extends Activity {
             }
 
             // goto pick photo.
-            Intent newIntent = new Intent(this, MainActivity.class);
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(newIntent);
+            Utils.gotoMain(this);
             finish();
         } else {
             mShowPhoto.setBackgroundDrawable(Drawable.createFromPath(photoPath));

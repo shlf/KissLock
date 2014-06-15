@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">吻锁</string>
+
+    <string name="attachToContact">选择图片</string>
+    <string name="take_photo">相机</string>
+    <string name="pick_photo">相册</string>
+
+    <string name="repick_photo">重新选择图片</string>
+    <string name="goto_launcher">返回桌面</string>
+
+</resources>
