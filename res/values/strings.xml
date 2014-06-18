@@ -6,6 +6,7 @@
     <string name="attachToContact">Choose Picture</string>
     <string name="take_photo">Take photo</string>
     <string name="pick_photo">Select photo from Gallery</string>
+    <string name="file_photo">Select photo from SDCard</string>
     <string name="default_photo">Use default photo</string>
 
     <string name="repick_photo">Re-pick photo</string>

@@ -13,6 +13,7 @@
     <!-- <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW"/> -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name="com.shlf.lockscreen.KissApplication"
@@ -51,6 +52,11 @@
                 <action android:name="android.intent.action.SCREEN_OFF" />
             </intent-filter>
         </receiver>
+
+        <!-- choose from sdcard -->
+        <activity android:name="com.orleonsoft.android.simplefilechooser.ui.FileChooserActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Dialog"/>
 
     </application>
 
