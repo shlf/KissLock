@@ -54,11 +54,12 @@ public class PickPhotoAction {
         final Context dialogContext = new ContextThemeWrapper(sActivity,
                 android.R.style.Theme_Light);
 
-        String[] choices = new String[4];
+        String[] choices = new String[5];
         choices[0] = sActivity.getString(R.string.take_photo);
         choices[1] = sActivity.getString(R.string.pick_photo);
-        choices[2] = sActivity.getString(R.string.default_photo);
-        choices[3] = sActivity.getString(android.R.string.cancel);
+        choices[2] = sActivity.getString(R.string.file_photo);
+        choices[3] = sActivity.getString(R.string.default_photo);
+        choices[4] = sActivity.getString(android.R.string.cancel);
         final ListAdapter adapter = new ArrayAdapter<String>(dialogContext,
                 android.R.layout.simple_list_item_1, choices);
 
@@ -76,6 +77,9 @@ public class PickPhotoAction {
                         doPickPhoto();
                         break;
                     case 2:
+                        FileChooserAction.runDirectoryChooser(sActivity);
+                        break;
+                    case 3:
                         SharedPreferencesManager mSpm = SharedPreferencesManager.getInstance();
                         mSpm.setString(SharedPreferencesManager.FILE_PHOTO_PATH,
                                 SharedPreferencesManager.KEY_PHOTO_PATH, "default");
@@ -83,7 +87,7 @@ public class PickPhotoAction {
                         Utils.gotoLockScreen(sActivity);
                         sActivity.finish();
                         break;
-                    case 3:
+                    case 4:
                         Utils.gotoLockScreen(sActivity);
                         sActivity.finish();
                         break;
@@ -210,6 +214,10 @@ public class PickPhotoAction {
 
             case SELECT_PIC_BY_PICK_PHOTO: {
                 return getPhotoPath(requestCode, data);
+            }
+
+            case FileChooserAction.FILE_CHOOSE_PHOTO: {
+                return FileChooserAction.pathFromData(data);
             }
 
             default:
