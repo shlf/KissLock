@@ -1,6 +1,8 @@
+
 package com.shlf.lockscreen.lock;
 
 import android.app.Activity;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,8 +17,8 @@ public class LockLayer implements View.OnSystemUiVisibilityChangeListener {
     private boolean isLocked;
     private final static int FLAG_APKTOOL_VALUE = 1280;
 
-    public static synchronized LockLayer getInstance(Activity act){
-        if(mLockLayer == null){
+    public static synchronized LockLayer getInstance(Activity act) {
+        if (mLockLayer == null) {
             mLockLayer = new LockLayer(act);
         }
         return mLockLayer;
@@ -27,7 +29,7 @@ public class LockLayer implements View.OnSystemUiVisibilityChangeListener {
         init();
     }
 
-    private void init(){
+    private void init() {
         isLocked = false;
         mWindowManager = mActivty.getWindowManager();
         mLockViewLayoutParams = new LayoutParams();
@@ -37,24 +39,28 @@ public class LockLayer implements View.OnSystemUiVisibilityChangeListener {
         mLockViewLayoutParams.flags = FLAG_APKTOOL_VALUE;
         mLockViewLayoutParams.flags |= LayoutParams.FLAG_DISMISS_KEYGUARD;
         mLockViewLayoutParams.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        if (Build.VERSION.SDK_INT >= 16) {
+            // 256 is View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            mLockViewLayoutParams.systemUiVisibility |= 256;
+        }
         mLockViewLayoutParams.softInputMode = LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN;
     }
 
     public synchronized void lock() {
-        if(mLockView!=null && !isLocked){
+        if (mLockView != null && !isLocked) {
             mWindowManager.addView(mLockView, mLockViewLayoutParams);
         }
         isLocked = true;
     }
 
     public synchronized void unlock() {
-        if(mWindowManager!=null&&isLocked){
+        if (mWindowManager != null && isLocked) {
             mWindowManager.removeView(mLockView);
         }
         isLocked = false;
     }
 
-    public synchronized void setLockView(View v){
+    public synchronized void setLockView(View v) {
         mLockView = v;
     }
 
