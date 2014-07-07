@@ -26,6 +26,8 @@ public class LockService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (null == intent) return Service.START_STICKY;
+
         mStartIntent = intent;
 
         if (DBG) Log.d(TAG, "***registerIntentReceivers");
