@@ -37,7 +37,9 @@ public class LockService extends Service {
         mReceiver = new LockLisnter(); // 用于侦听
         registerReceiver(mReceiver, filter);
 
-        if (DBG) Log.d(TAG, "service onStart and action is " + intent.getAction());
+        if (null != intent) {
+            if (DBG) Log.d(TAG, "service onStart and action is " + intent.getAction());
+        }
         if (DBG) Log.d(TAG, "service onStart and startId is " + startId);
 
         return super.onStartCommand(intent, flags, startId);
